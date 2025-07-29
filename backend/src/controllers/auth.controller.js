@@ -74,7 +74,7 @@ export async function login(req,res){
 
     }
     catch(error){
-        consolele.log("error in auth controller:".error.message)
+        consolele.log("error in auth controller (login):".error.message)
         res.status(500).json({message:"Internal Server Error"});
     }
 
