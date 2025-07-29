@@ -74,11 +74,12 @@ export async function login(req,res){
 
     }
     catch(error){
-        consolele.log("error in auth controller (login):".error.message)
+        console.log("error in auth controller (login):".error.message)
         res.status(500).json({message:"Internal Server Error"});
     }
 
 }
 export async function logout(req,res){
-    res.send('Hello World');
+    res.clearCookie("jwt");
+    res.status(200).json({success : true, message: "logout successful" });
 }
