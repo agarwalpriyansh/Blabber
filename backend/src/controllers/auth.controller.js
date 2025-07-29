@@ -1,6 +1,6 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-
+import isPasswordCorrect from '../models/User.js'
 
 export async function signup(req,res){
     const { fullName, email, password } = req.body;
@@ -54,27 +54,37 @@ export async function signup(req,res){
         
     }
     catch(error){
-        return res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: "Server error" });
     }
 
 }
 export async function login(req,res){
     try{
-        const {email,password} =req.body();
+        const {email,password} =req.body;
 
         if(!email || !password) return res.status(400).json({message:"all fields are required"})
             
-        let  user = User.findOne({email}) 
+        const  user = await User.findOne({email}) ;
         if(!user) return res.satus(401).json({message:"Invalid email or password"});
 
-        let isPasswordCorrect = await User.matchPassword(password);
+        let isPasswordCorrect = await user.matchPassword(password);
         if(!isPasswordCorrect) return res.satus(401).json({message:"Invalid email or password"});
+
+        const token = jwt.sign({userId : user._id}, process.env.JWT_SECRET,{expiresIn: '30d'});
+
+        res.cookie("jwt", token, {
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            httpOnly: true,
+
+        })
 
         res.status(200).json({success: true, user})
 
     }
     catch(error){
-        console.log("error in auth controller (login):".error.message)
+        console.log("error in auth controller (login):",error.message)
         res.status(500).json({message:"Internal Server Error"});
     }
 
