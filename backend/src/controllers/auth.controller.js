@@ -32,9 +32,9 @@ export async function signup(req,res){
             await upsertStreamUser({
             id: newUser._id.toString(),
             name: newUser.fullName,
-            image: newUser.profilePicture,
+            image: newUser.profilePicture || '',
             })
-            console.log(`stream user created for ${newUser._id}`)
+            console.log(`stream user created for ${newUser.fullName}`)
 
         }
         catch(error){
