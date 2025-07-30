@@ -1,6 +1,6 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-import isPasswordCorrect from '../models/User.js'
+import { upsertStreamUser } from '../lib/stream.js';
 
 export async function signup(req,res){
     const { fullName, email, password } = req.body;
@@ -27,6 +27,19 @@ export async function signup(req,res){
             password,
             profilePicture: randomAvatar
         })
+
+        try{
+            await upsertStreamUser({
+            id: newUser._id.toString(),
+            name: newUser.fullName,
+            image: newUser.profilePicture,
+            })
+            console.log(`stream user created for ${newUser._id}`)
+
+        }
+        catch(error){
+            console.error("Error creating Stream user:", error.message);
+        }
 
         const token = jwt.sign({userId : newUser._id}, process.env.JWT_SECRET,{expiresIn: '30d'});
 
@@ -69,6 +82,8 @@ export async function login(req,res){
 
         let isPasswordCorrect = await user.matchPassword(password);
         if(!isPasswordCorrect) return res.satus(401).json({message:"Invalid email or password"});
+
+        
 
         const token = jwt.sign({userId : user._id}, process.env.JWT_SECRET,{expiresIn: '30d'});
 
