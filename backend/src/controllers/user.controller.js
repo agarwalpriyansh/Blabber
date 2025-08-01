@@ -108,3 +108,36 @@ export async function acceptFriendRequest(req,res){
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+export async function getFreindRequest(req,res){
+    try {
+        const incomingReq = FriendRequest.find({
+            recepint: req.user._id,
+            status: "pending"
+        }).populate('sender', 'name profilePicture nativeLanguage learningLanguage');
+
+        const acceptedReq = FriendRequest.find({
+            recipient: req.user._id,
+            status: "accepted"
+        }).populate('sender', 'name profilePicture ');
+
+        res.status(200).json({incomingReq, acceptedReq});
+    } catch (error) {
+        console.error("Error fetching friend requests:", error);
+        res.status(500).json({ message: "Internal server error while fetching friend requests." });
+    }
+}
+
+export async function getOutgoingRequest(res,req){
+    try {
+        const outgoingReqs = FriendRequest.find({
+            sender: req.user._id,
+            status: "pending"
+        }).populate('recepient', 'name profilePicture nativeLanguage learningLanguage');
+        res.status(200).json(outgoingReqs);
+
+    } catch (error) {
+        console.error("Error fetching outgoing friend requests:", error);
+        res.status(500).json({ message: "Internal server error while fetching outgoing friend requests." });
+    }
+}
