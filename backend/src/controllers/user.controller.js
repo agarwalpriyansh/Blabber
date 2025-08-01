@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import friendRequest from '../models/friend-request.js';
 
 export async function getRecommendedUsers (req,res){
     try{
@@ -34,3 +35,41 @@ export async function getMyFriends (req,res){
     }
 }
 
+export async function sendFreindRequest (req,res){
+    try{
+        const myId = req.user._id;
+        const{id:recepientId} = req.params;
+
+        if(myId === recepientId){
+            return res.status(400).json({message: "You cannot send a friend request to yourself."});
+        }
+
+        const recepient = await User.findById(recepientId);
+
+        if(!recepient) return res.status(400).json({message:"user not found"});
+
+        // check is user already friend
+        if(recepient.friends.includes(myId)) return res.status(400).json({message:"User is already ur friend"});
+
+        // check if  already friend request send
+        const existing = await friendRequest.findOne({
+            $or:[
+                { sender: myId, recipient: recepientId },
+                { sender: recepientId, recipient: myId }
+            ]
+        })
+        if(existing) return res.status(400).json({message:"Friend request already sent"});
+        
+        const friendRequest = await friendRequest.create({
+            sender: myId,
+            recepient: recepientId
+        })
+
+        res.status(201).json(friendRequest);
+
+    }
+    catch(error){
+        console.error("error sending friend request:", error);
+        res.status(500).json({message: "Internal server error while sending friend request."});
+    }
+}
