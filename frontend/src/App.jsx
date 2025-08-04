@@ -1,42 +1,110 @@
-import React from 'react'
-import { Routes , Route } from 'react-router'
-import {Toaster} from 'react-hot-toast'
-import { axiosInstance } from './lib/axios'
+import { Navigate, Route, Routes } from "react-router";
 
+import HomePage from "./pages/HomePage.jsx";
+import SignUpPage from "./pages/SignUpPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import NotificationsPage from "./pages/NotificationsPage.jsx";
+import CallPage from "./pages/CallPage.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
+import OnboardingPage from "./pages/OnboardingPage.jsx";
 
+import { Toaster } from "react-hot-toast";
 
-import { HomePage} from './Pages/HomePage'
-import { SignUpPage } from './Pages/SingUpPage' 
-import {LoginPage} from './Pages/LoginPage'
-import {NotificationsPage} from './Pages/NotificationsPage'
-import { CallPage } from './Pages/CallPage'
-import { ChatPage } from './Pages/ChatPage'
-import {OnboardingPage} from './Pages/OnboardingPage'
-
-
+import PageLoader from "./components/PageLoader.jsx";
+import useAuthUser from "./hooks/useAuthUser.js";
+import Layout from "./components/Layout.jsx";
+import { useThemeStore } from "./store/useThemeStore.js";
 
 const App = () => {
-  const {data, isLoading, error} = useQuery({
-    queryKey: ['authUser'],
-    queryFn: async () => {
-      const {data} = await axiosInstance.get('/user/authUser')
-      return data
-    }
-  })
+  const { isLoading, authUser } = useAuthUser();
+  const { theme } = useThemeStore();
+
+  const isAuthenticated = Boolean(authUser);
+  const isOnboarded = authUser?.isOnboarded;
+
+  if (isLoading) return <PageLoader />;
 
   return (
-    <div className=""  data-theme="coffee">
-       <Routes>
-          <Route path="/" component={HomePage}/>
-          <Route path="/signin" component={SignUpPage}/>
-          <Route path="/login" component={LoginPage}/>
-          <Route path="/notifiactions" component={NotificationsPage}/>
-          <Route path="/call" component={CallPage}/>
-          <Route path="/chat" component={ChatPage}/>
-          <Route path="/onboarding" component={OnboardingPage}/>
-       </Routes>
-    </div>
-  )
-}
+    <div className="h-screen" data-theme={theme}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <Layout showSidebar={true}>
+                <HomePage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            !isAuthenticated ? <SignUpPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            !isAuthenticated ? <LoginPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <Layout showSidebar={true}>
+                <NotificationsPage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
+        />
+        <Route
+          path="/call/:id"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <CallPage />
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
+        />
 
-export default App
+        <Route
+          path="/chat/:id"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <Layout showSidebar={false}>
+                <ChatPage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
+        />
+
+        <Route
+          path="/onboarding"
+          element={
+            isAuthenticated ? (
+              !isOnboarded ? (
+                <OnboardingPage />
+              ) : (
+                <Navigate to="/" />
+              )
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+      </Routes>
+
+      <Toaster />
+    </div>
+  );
+};
+export default App;
