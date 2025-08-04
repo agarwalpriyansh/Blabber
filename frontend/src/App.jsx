@@ -1,5 +1,9 @@
 import React from 'react'
 import { Routes , Route } from 'react-router'
+import {Toaster} from 'react-hot-toast'
+
+
+
 
 import { HomePage} from './Pages/HomePage'
 import { SignUpPage } from './Pages/SingUpPage' 
@@ -13,7 +17,7 @@ import {OnboardingPage} from './Pages/OnboardingPage'
 const App = () => {
   return (
     <div className=""  data-theme="coffee">
-       <Router>
+       <Routes>
           <Route path="/" component={HomePage}/>
           <Route path="/signin" component={SignUpPage}/>
           <Route path="/login" component={LoginPage}/>
@@ -21,7 +25,7 @@ const App = () => {
           <Route path="/call" component={CallPage}/>
           <Route path="/chat" component={ChatPage}/>
           <Route path="/onboarding" component={OnboardingPage}/>
-       </Router>
+       </Routes>
     </div>
   )
 }
