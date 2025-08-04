@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes , Route } from 'react-router'
 import {Toaster} from 'react-hot-toast'
-
+import { axiosInstance } from './lib/axios'
 
 
 
@@ -14,7 +14,16 @@ import { ChatPage } from './Pages/ChatPage'
 import {OnboardingPage} from './Pages/OnboardingPage'
 
 
+
 const App = () => {
+  const {data, isLoading, error} = useQuery({
+    queryKey: ['authUser'],
+    queryFn: async () => {
+      const {data} = await axiosInstance.get('/user/authUser')
+      return data
+    }
+  })
+
   return (
     <div className=""  data-theme="coffee">
        <Routes>
