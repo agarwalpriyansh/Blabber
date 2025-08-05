@@ -9,7 +9,7 @@ const LoginPage = () => {
     password: "",
   });
 
-  // we did it at first, without using our custom hook
+  // did it at first, without using our custom hook
   // const queryClient = useQueryClient();
   // const {
   //   mutate: loginMutation,
