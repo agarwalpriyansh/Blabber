@@ -11,7 +11,7 @@ const SignUpPage = () => {
     password: "",
   });
 
-  // This is how we did it at first, without using our custom hook
+  //  did it at first, without using our custom hook
   // const queryClient = useQueryClient();
   // const {
   //   mutate: signupMutation,
@@ -22,7 +22,7 @@ const SignUpPage = () => {
   //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
   // });
 
-  // This is how we did it using our custom hook - optimized version
+  // did it using our custom hook - optimized version
   const { isPending, error, signupMutation } = useSignUp();
 
   const handleSignup = (e) => {
