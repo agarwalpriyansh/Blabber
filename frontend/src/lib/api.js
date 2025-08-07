@@ -29,3 +29,14 @@ export const login = async (loginData) => {
   const response = await axiosInstance.post("/auth/login", loginData);
   return response.data;
 };
+
+
+export async function getUserFriends() {
+  const response = await axiosInstance.get("/users/friends");
+  return response.data;
+}
+
+export async function getRecommendedUsers() {
+  const response = await axiosInstance.get("/users");
+  return response.data;
+}
