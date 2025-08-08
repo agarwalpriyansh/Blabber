@@ -1,9 +1,9 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export const useThemeStore = create((set) => ({
-  theme: localStorage.getItem("blabber-theme") || "coffee",
+  theme: localStorage.getItem("blabber-theme") || "forest",
   setTheme: (theme) => {
     localStorage.setItem("blabber-theme", theme);
-    set({ theme })
-},
+    set({ theme });
+  },
 }));
