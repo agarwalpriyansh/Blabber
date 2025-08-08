@@ -18,8 +18,8 @@ router.get('/' , getRecommendedUsers);
 router.get('/friends' , getMyFriends);
 router.post('/friend-request/:id' , sendFreindRequest);
 router.put('/friend-request/:id/accept' , acceptFriendRequest);
-router.get('/friend-request' , getFreindRequest);
-router.get('/outgoing-friend-request' , getOutgoingRequest);
+router.get('/friend-requests' , getFreindRequest);
+router.get('/outgoing-friend-requests' , getOutgoingRequest);
 
 
 export default router;

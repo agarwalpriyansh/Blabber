@@ -22,8 +22,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/auth', authRoutes)
-app.use('/api/user', userRoutes)
-app.use('/api/user', chatRoutes)
+app.use('/api/users', userRoutes)
+app.use('/api/chat', chatRoutes)
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

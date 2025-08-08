@@ -3,7 +3,7 @@ import FriendRequest from '../models/friend-request.js';
 
 export async function getRecommendedUsers (req,res){
     try{
-        const currentUserId = req.user._id;
+        const currentUserId = req.user.id;
         const currentUser = req.user;
 
         const recommenededUsers = await User.find({
@@ -52,17 +52,17 @@ export async function sendFreindRequest (req,res){
         if(recepient.friends.includes(myId)) return res.status(400).json({message:"User is already ur friend"});
 
         // check if  already friend request send
-        const existing = await friendRequest.findOne({
+        const existing = await FriendRequest.findOne({
             $or:[
-                { sender: myId, recipient: recepientId },
-                { sender: recepientId, recipient: myId }
+                { sender: myId, recepient: recepientId },
+                { sender: recepientId, recepient: myId }
             ]
         })
         if(existing) return res.status(400).json({message:"Friend request already sent"});
         
-        const friendRequest = await friendRequest.create({
+        const friendRequest = await FriendRequest.create({
             sender: myId,
-            recepient: recepientId
+            recepient: recepientId 
         })
 
         res.status(201).json(friendRequest);
@@ -83,8 +83,8 @@ export async function acceptFriendRequest(req,res){
             return res.status(404).json({ message: "Friend request not found" });
         }
 
-        // Verify the current user is the recipient
-        if (friendRequest.recipient.toString() !== req.user.id) {
+        // Verify the current user is the recepient
+        if (friendRequest.recepient.toString() !== req.user.id) {
             return res.status(403).json({ message: "You are not authorized to accept this request" });
         }
 
@@ -93,12 +93,12 @@ export async function acceptFriendRequest(req,res){
 
         // add each user to the other's friends array
         // $addToSet: adds elements to an array only if they do not already exist.
-        await User.findByIdAndUpdate(friendRequest.sender, {
-            $addToSet: { friends: friendRequest.recipient },
+        await User.findByIdAndUpdate(FriendRequest.sender, {
+            $addToSet: { friends: FriendRequest.recepient },
         });
 
-        await User.findByIdAndUpdate(friendRequest.recipient, {
-            $addToSet: { friends: friendRequest.sender },
+        await User.findByIdAndUpdate(FriendRequest.recepient, {
+            $addToSet: { friends: FriendRequest.sender },
         });
 
         res.status(200).json({ message: "Friend request accepted" });
@@ -117,7 +117,7 @@ export async function getFreindRequest(req,res){
         }).populate('sender', 'name profilePicture nativeLanguage learningLanguage');
 
         const acceptedReq = FriendRequest.find({
-            recipient: req.user._id,
+            recepient: req.user._id,
             status: "accepted"
         }).populate('sender', 'name profilePicture ');
 
@@ -128,16 +128,19 @@ export async function getFreindRequest(req,res){
     }
 }
 
-export async function getOutgoingRequest(res,req){
+export async function getOutgoingRequest(req, res) {
     try {
-        const outgoingReqs = FriendRequest.find({
+        const outgoingReqs = await FriendRequest.find({
             sender: req.user._id,
             status: "pending"
         }).populate('recepient', 'name profilePicture nativeLanguage learningLanguage');
+
         res.status(200).json(outgoingReqs);
 
     } catch (error) {
         console.error("Error fetching outgoing friend requests:", error);
-        res.status(500).json({ message: "Internal server error while fetching outgoing friend requests." });
+        res.status(500).json({
+            message: "Internal server error while fetching outgoing friend requests."
+        });
     }
 }
