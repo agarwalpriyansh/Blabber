@@ -9,7 +9,7 @@ const LoginPage = () => {
     password: "",
   });
 
-  // did it at first, without using our custom hook
+  // This is how we did it at first, without using our custom hook
   // const queryClient = useQueryClient();
   // const {
   //   mutate: loginMutation,
@@ -20,7 +20,7 @@ const LoginPage = () => {
   //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
   // });
 
-  //  did it using our custom hook - optimized version
+  // This is how we did it using our custom hook - optimized version
   const { isPending, error, loginMutation } = useLogin();
 
   const handleLogin = (e) => {
@@ -40,7 +40,7 @@ const LoginPage = () => {
           <div className="mb-4 flex items-center justify-start gap-2">
             <ShipWheelIcon className="size-9 text-primary" />
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
-              Blabber
+              Streamify
             </span>
           </div>
 

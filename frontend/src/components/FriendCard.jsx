@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { LANGUAGE_TO_FLAG } from "../constants";
 
 const FriendCard = ({ friend }) => {
   return (
@@ -31,8 +32,6 @@ const FriendCard = ({ friend }) => {
   );
 };
 export default FriendCard;
-
-import { LANGUAGE_TO_FLAG } from "../constants";
 
 export function getLanguageFlag(language) {
   if (!language) return null;
