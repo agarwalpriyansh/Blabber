@@ -1,19 +1,19 @@
 import { Navigate, Route, Routes } from "react-router";
 
-import HomePage from "./pages/HomePage.jsx";
-import SignUpPage from "./pages/SignUpPage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import NotificationsPage from "./pages/NotificationsPage.jsx";
-import CallPage from "./pages/CallPage.jsx";
-import ChatPage from "./pages/ChatPage.jsx";
-import OnboardingPage from "./pages/OnboardingPage.jsx";
+import HomePage from "@/frontend/src/Pages/HomePage.jsx";
+import SignUpPage from "@/frontend/src/Pages/SignUpPage.jsx";
+import LoginPage from "@/frontend/src/Pages/LoginPage.jsx";
+import NotificationsPage from "@/frontend/src/Pages/NotificationsPage.jsx";
+import CallPage from "@/frontend/src/Pages/CallPage.jsx";
+import ChatPage from "@/frontend/src/Pages/ChatPage.jsx";
+import OnboardingPage from "@/frontend/src/Pages/OnboardingPage.jsx";
 
 import { Toaster } from "react-hot-toast";
 
-import PageLoader from "./components/PageLoader.jsx";
-import useAuthUser from "./hooks/useAuthUser.js";
-import Layout from "./components/Layout.jsx";
-import { useThemeStore } from "./store/useThemeStore.js";
+import PageLoader from "@/frontend/src/components/PageLoader.jsx";
+import useAuthUser from "@/frontend/src/hooks/useAuthUser.js";
+import Layout from "@/frontend/src/components/Layout.jsx";
+import { useThemeStore } from "@/frontend/src/store/useThemeStore.js";
 
 const App = () => {
   const { isLoading, authUser } = useAuthUser();
