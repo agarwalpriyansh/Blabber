@@ -1,55 +1,40 @@
-<h1 align="center">✨ Fullstack Chat & Video Calling App ✨</h1>
+# Language Exchange & Communication Platform
 
-![Demo App](/frontend/public/screenshot-for-readme.png)
-
-Highlights:
-
-- 🌐 Real-time Messaging with Typing Indicators & Reactions
-- 📹 1-on-1 and Group Video Calls with Screen Sharing & Recording
-- 🔐 JWT Authentication & Protected Routes
-- 🌍 Language Exchange Platform with 32 Unique UI Themes
-- ⚡ Tech Stack: React + Express + MongoDB + TailwindCSS + TanStack Query
-- 🧠 Global State Management with Zustand
-- 🚨 Error Handling (Frontend & Backend)
-- 🚀 Free Deployment
-- 🎯 Built with Scalable Technologies like Stream
-- ⏳ And much more!
+A modern real-time communication platform that enables language exchange, instant messaging, and video calling — built for scalability and rich user experience.
 
 ---
 
-## 🧪 .env Setup
+## Features
 
-### Backend (`/backend`)
-
-```
-PORT=5001
-MONGO_URI=your_mongo_uri
-STEAM_API_KEY=your_steam_api_key
-STEAM_API_SECRET=your_steam_api_secret
-JWT_SECRET_KEY=your_jwt_secret
-NODE_ENV=development
-```
-
-### Frontend (`/frontend`)
-
-```
-VITE_STREAM_API_KEY=your_stream_api_key
-```
+- Real-time Messaging with typing indicators & reactions
+- 1-on-1 and Group Video Calls with screen sharing & recording
+- JWT Authentication & protected routes for secure access
+- 32 Unique UI Themes for personalized user experiences
+- Tech Stack: React + Express + MongoDB + TailwindCSS + TanStack Query
+- Global State Management using Zustand
+- Robust Error Handling (frontend & backend)
+- Free Deployment ready for production
+- Built with scalable technologies like Stream
+- And much more...
 
 ---
 
-## 🔧 Run the Backend
+## Tech Stack
 
+| Frontend    | Backend     | Database | State Management | Deployment |
+|-------------|------------|----------|------------------|------------|
+| React       | Express.js | MongoDB  | Zustand          | Vercel     |
+| TailwindCSS | Node.js    |          | TanStack Query   | Render     |
+
+---
+
+
+
+## Getting Started
+
+Follow these steps to run the project locally:
+
+### 1. Clone the Repository
 ```bash
-cd backend
-npm install
-npm run dev
-```
-
-## 💻 Run the Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
+git clone https://github.com/yourusername/your-repo.git
+cd your-repo
